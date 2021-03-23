@@ -1,7 +1,5 @@
 package com.github.thomasdarimont.keycloak.avatar;
 
-import javax.ws.rs.core.MultivaluedMap;
-import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.cache.NoCache;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
@@ -23,10 +21,11 @@ import javax.ws.rs.core.UriInfo;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
+import org.jboss.logging.Logger;
 
 public class AvatarResource extends AbstractAvatarResource {
-    private static final Logger log = Logger.getLogger(AvatarResource.class);
-
+    private static final Logger logger = Logger.getLogger(AvatarAdminResource.class);
+    
     public static final String STATE_CHECKER_ATTRIBUTE = "state_checker";
     public static final String STATE_CHECKER_PARAMETER = "stateChecker";
 
@@ -41,15 +40,12 @@ public class AvatarResource extends AbstractAvatarResource {
         AppAuthManager appAuthManager = new AppAuthManager();
         RealmModel realm = keycloakSession.getContext().getRealm();
 
-        AuthenticationManager.AuthResult authResult = appAuthManager.authenticateIdentityCookie(keycloakSession, realm);
-        if (authResult != null) {
-            return authResult;
-        }
-
-        return null;
+        return appAuthManager.authenticateIdentityCookie(keycloakSession, realm);
     }
 
     @Path("/admin")
+    @GET
+    @Produces(MediaType.WILDCARD)
     public AvatarAdminResource admin() {
         AvatarAdminResource service = new AvatarAdminResource(session);
         ResteasyProviderFactory.getInstance().injectProperties(service);
@@ -57,25 +53,32 @@ public class AvatarResource extends AbstractAvatarResource {
         return service;
     }
 
+    @Path("/")
     @GET
     @Produces({"image/png", "image/jpeg", "image/gif"})
-    public Response downloadCurrentUserAvatarImage() {
+    public Response downloadCurrentUserAvatarImage(@Context UriInfo uriInfo) {
+        // make avatar images publicly available to allow server side processing
+//        if (auth == null) {
+//            return badRequest();
+//        }
 
-        if (auth == null) {
-            return badRequest();
+        String realmName = session.getContext().getRealm().getName();
+        String userId = null;
+        if (uriInfo.getQueryParameters().containsKey("user")) {
+            userId = uriInfo.getQueryParameters().get("user").get(0);
+        } else {
+            userId = auth.getUser().getId();
         }
-
-        String realmName = auth.getSession().getRealm().getName();
-        String userId = auth.getUser().getId();
 
         return Response.ok(fetchUserImage(realmName, userId)).build();
     }
 
+    @Path("/")
     @POST
-    @NoCache
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.WILDCARD)
+    @NoCache
     public Response uploadCurrentUserAvatarImage(MultipartFormDataInput input, @Context UriInfo uriInfo) {
-
         if (auth == null) {
             return badRequest();
         }
@@ -92,11 +95,9 @@ public class AvatarResource extends AbstractAvatarResource {
             String userId = auth.getUser().getId();
 
             saveUserImage(realmName, userId, imageInputStream);
-
             if (uriInfo.getQueryParameters().containsKey("account")) {
                 return Response.seeOther(RealmsResource.accountUrl(session.getContext().getUri().getBaseUriBuilder()).build(realmName)).build();
             }
-
 
             return Response.ok().build();
 
@@ -116,5 +117,4 @@ public class AvatarResource extends AbstractAvatarResource {
             return false;
         }
     }
-
 }

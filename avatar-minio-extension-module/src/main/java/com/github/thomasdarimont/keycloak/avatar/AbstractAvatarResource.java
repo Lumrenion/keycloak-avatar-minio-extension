@@ -1,6 +1,7 @@
 package com.github.thomasdarimont.keycloak.avatar;
 
-import com.github.thomasdarimont.keycloak.avatar.storage.AvatarStorageProvider;
+import com.github.thomasdarimont.keycloak.avatar.storage.minio.MinioAvatarStorageProviderFactory;
+import com.github.thomasdarimont.keycloak.avatar.storage.minio.MinioAvatarStorageProvider;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,24 +19,16 @@ public abstract class AbstractAvatarResource {
         this.session = session;
     }
 
-    public AvatarStorageProvider getAvatarStorageProvider() {
-        return lookupAvatarStorageProvider(session);
-    }
-
-    protected AvatarStorageProvider lookupAvatarStorageProvider(KeycloakSession keycloakSession) {
-        return keycloakSession.getProvider(AvatarStorageProvider.class);
-    }
-
     protected Response badRequest() {
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
     protected void saveUserImage(String realmName, String userId, InputStream imageInputStream) {
-        getAvatarStorageProvider().saveAvatarImage(realmName, userId, imageInputStream);
+        MinioAvatarStorageProviderFactory.create().saveAvatarImage(realmName, userId, imageInputStream);
     }
 
     protected StreamingOutput fetchUserImage(String realmId, String userId) {
-        return output -> copyStream(getAvatarStorageProvider().loadAvatarImage(realmId, userId), output);
+        return output -> copyStream(MinioAvatarStorageProviderFactory.create().loadAvatarImage(realmId, userId), output);
     }
 
     private void copyStream(InputStream in, OutputStream out) throws IOException {

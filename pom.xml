@@ -10,9 +10,10 @@
     <version>1.0.1.0-SNAPSHOT</version>
 
     <properties>
-        <keycloak.version>4.8.3.Final</keycloak.version>
-        <lombok.version>1.18.6</lombok.version>
-        <minio.version>5.0.6</minio.version>
+        <keycloak.version>12.0.4</keycloak.version>
+        <lombok.version>edge-SNAPSHOT</lombok.version>
+<!--        <lombok.version>1.18.16</lombok.version> -->
+        <minio.version>8.1.0</minio.version>
 
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -75,7 +76,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-ear-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.2.0</version>
                 <configuration>
                     <version>7</version>
                 </configuration>
@@ -84,7 +85,7 @@
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
-                <version>2.0.1.Final</version>
+                <version>2.0.2.Final</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
@@ -100,6 +101,11 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <!-- As of 2021-03-21, edge-SNAPSHOT is the only version available of lombok with JDK 16 support -->
+	    <repository>
+		    <id>projectlombok.org</id>
+		    <url>https://projectlombok.org/edge-releases</url>
+	    </repository>
     </repositories>
 
 </project>

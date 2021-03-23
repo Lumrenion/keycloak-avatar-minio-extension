@@ -5,16 +5,16 @@ import org.keycloak.services.resource.RealmResourceProvider;
 
 public class AvatarResourceProvider implements RealmResourceProvider {
 
-    private final KeycloakSession keycloakSession;
+    private final KeycloakSession session;
 
-    public AvatarResourceProvider(KeycloakSession keycloakSession) {
-        this.keycloakSession = keycloakSession;
+    public AvatarResourceProvider(KeycloakSession session) {
+        this.session = session;
     }
 
 
     @Override
     public Object getResource() {
-        return new AvatarResource(keycloakSession);
+        return new AvatarResource(session);
     }
 
     @Override

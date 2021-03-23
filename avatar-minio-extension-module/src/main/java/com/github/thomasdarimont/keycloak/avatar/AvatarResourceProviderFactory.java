@@ -9,32 +9,27 @@ import static org.keycloak.Config.Scope;
 
 public class AvatarResourceProviderFactory implements RealmResourceProviderFactory {
 
-    private AvatarResourceProvider avatarResourceProvider;
+    public static final String ID = "avatar-provider";
 
     @Override
     public RealmResourceProvider create(KeycloakSession keycloakSession) {
-        if (avatarResourceProvider == null) {
-            avatarResourceProvider = new AvatarResourceProvider(keycloakSession);
-        }
-        return avatarResourceProvider;
-    }
-
-    @Override
-    public void init(Scope scope) {
-    }
-
-    @Override
-    public void postInit(KeycloakSessionFactory keycloakSessionFactory) {
-
-    }
-
-    @Override
-    public void close() {
-        // NOOP
+        return new AvatarResourceProvider(keycloakSession);
     }
 
     @Override
     public String getId() {
-        return "avatar-provider";
+        return ID;
+    }
+
+    @Override
+    public void init(Scope config) {
+    }
+
+    @Override
+    public void postInit(KeycloakSessionFactory factory) {
+    }
+
+    @Override
+    public void close() {
     }
 }

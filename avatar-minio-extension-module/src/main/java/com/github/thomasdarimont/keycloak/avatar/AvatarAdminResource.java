@@ -1,6 +1,6 @@
 package com.github.thomasdarimont.keycloak.avatar;
 
-import com.github.thomasdarimont.keycloak.avatar.storage.AvatarStorageProvider;
+import com.github.thomasdarimont.keycloak.avatar.storage.minio.MinioAvatarStorageProvider;
 import java.io.InputStream;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.ForbiddenException;
@@ -40,7 +40,7 @@ public class AvatarAdminResource extends AbstractAvatarResource {
     private AdminPermissionEvaluator realmAuth;
 
     @Context
-    private AvatarStorageProvider avatarStorageProvider;
+    private MinioAvatarStorageProvider avatarStorageProvider;
 
     private AppAuthManager authManager;
     private TokenManager tokenManager;
@@ -139,7 +139,10 @@ public class AvatarAdminResource extends AbstractAvatarResource {
             throw new UnauthorizedException("Unknown realm in token");
         }
         session.getContext().setRealm(realm);
-        AuthenticationManager.AuthResult authResult = authManager.authenticateBearerToken(tokenString, session, realm, session.getContext().getUri(), clientConnection, httpHeaders);
+        AuthenticationManager.AuthResult authResult = new AppAuthManager.BearerTokenAuthenticator(session)
+                .setTokenString(tokenString)
+                .authenticate();
+        
         if (authResult == null) {
             logger.debug("Token not valid");
             throw new UnauthorizedException("Bearer");
