@@ -70,8 +70,8 @@ mvn clean verify
 ```
 
 ## Deploy the example
-Copy both files `avatar-minio-extension-bundle/target/avatar-minio-extension-bundle-1.0.1.0-SNAPSHOT.ear` 
-and `avatar-minio-extension-module/target/avatar-minio-extension-module-1.0.1.0-SNAPSHOT.ear` 
+Copy both files `avatar-minio-extension-bundle/target/avatar-minio-extension-bundle-2.0.0.ear` 
+and `avatar-minio-extension-module/target/avatar-minio-extension-module-2.0.0.jar` 
 to `./keycloak/extensions` or, if you are not using the above docker configuration, 
 to `standalone/deployments/` in your Keycloak root directory.
 
