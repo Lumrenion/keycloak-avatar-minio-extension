@@ -25,6 +25,7 @@ public abstract class AbstractAvatarResource {
 
     protected void saveUserImage(String realmName, String userId, InputStream imageInputStream) {
         MinioAvatarStorageProviderFactory.create().saveAvatarImage(realmName, userId, imageInputStream);
+        
     }
 
     protected StreamingOutput fetchUserImage(String realmId, String userId) {

@@ -7,10 +7,10 @@
     <groupId>com.github.thomasdarimont.keycloak</groupId>
     <artifactId>avatar-minio-extension</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 
     <properties>
-        <keycloak.version>12.0.4</keycloak.version>
+        <keycloak.version>13.0.1</keycloak.version>
         <lombok.version>edge-SNAPSHOT</lombok.version>
 <!--        <lombok.version>1.18.16</lombok.version> -->
         <minio.version>8.1.0</minio.version>

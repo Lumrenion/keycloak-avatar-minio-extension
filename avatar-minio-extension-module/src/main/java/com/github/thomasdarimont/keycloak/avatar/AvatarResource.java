@@ -93,7 +93,9 @@ public class AvatarResource extends AbstractAvatarResource {
 
             String realmName = auth.getSession().getRealm().getName();
             String userId = auth.getUser().getId();
-
+            String baseUri = session.getContext().getUri().getBaseUri().toString();
+            auth.getUser().setSingleAttribute("avatar", baseUri + "realms/" + realmName + "/avatar-provider/?user=" + userId);
+            
             saveUserImage(realmName, userId, imageInputStream);
             if (uriInfo.getQueryParameters().containsKey("account")) {
                 return Response.seeOther(RealmsResource.accountUrl(session.getContext().getUri().getBaseUriBuilder()).build(realmName)).build();

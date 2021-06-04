@@ -1,7 +1,7 @@
 # Disclaimer
 The original project does not seem to be supported anymore. That is why I 
 created this fork and changed it so that it works for the recent Keycloak 
-version, which is 12.0.4. I also bumped all dependencies and Java JDK to 
+version, which is 13.0.1. I also bumped all dependencies and Java JDK to 
 version 16.
 
 The plugin was designed to be used in a [Docker](https://www.docker.com/) 
@@ -70,8 +70,8 @@ mvn clean verify
 ```
 
 ## Deploy the example
-Copy both files `avatar-minio-extension-bundle/target/avatar-minio-extension-bundle-2.0.0.ear` 
-and `avatar-minio-extension-module/target/avatar-minio-extension-module-2.0.0.jar` 
+Copy both files `avatar-minio-extension-bundle/target/avatar-minio-extension-bundle-2.0.1.ear` 
+and `avatar-minio-extension-module/target/avatar-minio-extension-module-2.0.1.jar` 
 to `./keycloak/extensions` or, if you are not using the above docker configuration, 
 to `standalone/deployments/` in your Keycloak root directory.
 
