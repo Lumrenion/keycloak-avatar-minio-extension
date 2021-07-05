@@ -10,7 +10,7 @@
     <version>2.0.1</version>
 
     <properties>
-        <keycloak.version>13.0.1</keycloak.version>
+        <keycloak.version>14.0.0</keycloak.version>
         <lombok.version>edge-SNAPSHOT</lombok.version>
 <!--        <lombok.version>1.18.16</lombok.version> -->
         <minio.version>8.1.0</minio.version>

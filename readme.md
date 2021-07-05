@@ -1,8 +1,10 @@
 # Disclaimer
 The original project does not seem to be supported anymore. That is why I 
 created this fork and changed it so that it works for the recent Keycloak 
-version, which is 13.0.1. I also bumped all dependencies and Java JDK to 
-version 16.
+version. I also bumped all dependencies and Java JDK to version 16. Tested
+with the following Keycloak versions:
+- 13.0.1
+- 14.0.0
 
 The plugin was designed to be used in a [Docker](https://www.docker.com/) 
 environment. That is why I decided to make it configurable via environment
